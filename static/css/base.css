@@ -1,3 +1,5 @@
+@import url("/static/css/root.css");
+
 * {
   margin: 0;
   padding: 0;
@@ -5,8 +7,6 @@
 }
 
 body {
-  display: flex;
-  flex-direction: column;
   width: 100%;
   height: 100vh;
   overflow: hidden;
@@ -17,12 +17,6 @@ body {
   flex-direction: row;
   width: 100%;
   height: 100%;
-  flex: 1;
-}
-
-.container-fluid div.row {
-  width: 100%;
-  height: 100%;
 }
 
 .top-bar {
@@ -30,8 +24,8 @@ body {
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  flex: 0 0 80px;
-  background: #650000;
+  height: 80px;
+  background: var(--fifth-color-light-mode);
 }
 
 .top-bar img {
@@ -42,13 +36,13 @@ body {
 .top-bar .label-logo {
   font-size: 22px;
   font-style: italic;
-  color: #ff0000;
+  color: var(--third-color-light-mode);
 }
 
 .lateral-bar {
   height: 100%;
   padding: 10px;
-  background: #b80000;
+  background: var(--fourth-color-light-mode);
 }
 
 .lateral-bar ul {
@@ -69,12 +63,12 @@ ul li {
   width: 100%;
   height: 40px;
   border-radius: 8px;
-  background: #ff6767;
+  background: var(--second-color-light-mode);
 }
 
 li:hover {
   cursor: pointer;
-  background: #ff67679c;
+  background: var(--button-hover-color-light-mode);
 }
 
 li a {
@@ -85,5 +79,4 @@ li a {
 
 main {
   height: 100%;
-  background: black;
 }

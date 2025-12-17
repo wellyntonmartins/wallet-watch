@@ -1,0 +1,82 @@
+@import url("/static/css/root.css");
+
+* {
+  transition: all 0.3s ease;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--fourth-color-light-mode);
+}
+
+.container-fluid .login-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  gap: 15px;
+  color: var(--white-color);
+  background: var(--fifth-color-light-mode);
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  align-items: center;
+  gap: 15px;
+}
+
+form button {
+  width: 80%;
+  height: 45px;
+  border-radius: 12px;
+  border: none;
+  background-color: var(--third-color-light-mode);
+}
+
+form button:hover {
+  background-color: var(--button-hover-color-light-mode);
+}
+
+form a {
+  color: var(--white-color);
+}
+
+form h2 {
+  font-style: italic;
+}
+
+form .form-group {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  gap: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  height: 45px;
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--primary-color-light-mode);
+}
+
+.form-group input:focus {
+  outline: none;
+  border: none;
+  box-shadow: 10px 10px var(--third-color-light-mode);
+}
