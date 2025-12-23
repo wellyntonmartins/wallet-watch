@@ -19,7 +19,7 @@ def auth_login(cnx, email, password):
         result = cursor.fetchone() 
 
         if result:
-            return True, "The credentials are valid.", None
+            return True, "The credentials are valid.", result['id']
         else:
             return False, "Email or password is incorrect. Please try again!", None
     except Exception as e:
