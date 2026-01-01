@@ -13,6 +13,7 @@ def auth_register(cnx, email, password):
             return False, "Email already registered. Please use a different email or login", None
 
         query = "INSERT INTO user (email, password) VALUES (%s, md5(%s))"
+        cursor = cnx.cursor()
         cursor.execute(query, (email, password))
         cnx.commit()
 
@@ -20,6 +21,26 @@ def auth_register(cnx, email, password):
     except Exception as e:
         cnx.rollback()
         return False, f"Error during registration: {e}", "Exception"
+    finally:
+        if cursor:
+            cursor.close()
+        if cnx:
+            cnx.close()
+
+def insert_transaction(cnx, user_id, transaction_type, category, essential, amount, date, description):
+    cursor = None
+
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        query = "INSERT INTO transactions (user_id, type, category, essential, amount, transaction_date, description) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (user_id, transaction_type, category, essential, amount, date, description,))
+        cnx.commit()
+
+        return True, "Transaction successfully added"
+    except Exception as e:
+        cnx.rollback()
+        return False, f"Error during transaction add: {e}"
     finally:
         if cursor:
             cursor.close()

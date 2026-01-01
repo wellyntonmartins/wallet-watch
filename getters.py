@@ -30,28 +30,19 @@ def auth_login(cnx, email, password):
         if cnx:
             cnx.close()
 
-def auth_register(cnx, email, password):
+def get_transactions(cnx, user_id):
     cursor = None
 
     try:
         cursor = cnx.cursor(dictionary=True)
 
-        check_email_query = "SELECT * FROM user WHERE email = %s"
-        cursor.execute(check_email_query, (email,))
-        existing_user = cursor.fetchone()
+        query = "SELECT * FROM transactions WHERE user_id = %s"
+        cursor.execute(query, (user_id,))
+        transactions = cursor.fetchall() 
 
-        if existing_user:
-            return False, "Email already registered. Please use a different email or login", None
-
-        query = "INSERT INTO user (email, password) VALUES (%s, md5(%s))"
-        cursor = cnx.cursor()
-        cursor.execute(query, (email, password))
-        cnx.commit()
-
-        return True, "User registered successfully", None
+        return True, "User transactions successfully redeemed", transactions
     except Exception as e:
-        cnx.rollback()
-        return False, f"Error during registration: {e}", "Exception"
+        return False, f"Error during get user transactions: {e}", "Exception"
     finally:
         if cursor:
             cursor.close()

@@ -4,15 +4,20 @@ block title %} Transactions {% endblock %} {% block content %}
 
 <div class="container">
   <div class="row header-row mt-3">
-    <div class="col md-12">
-      <h2><i class="bi bi-cash-coin"></i>Transactions</h2>
-      <button type="button" class="btn btn-new-t">
+    <div class="col-md-12">
+      <h2><i class="bi bi-cash-coin"></i> Transactions this month</h2>
+      <button
+        type="button"
+        class="btn btn-new-t"
+        data-bs-toggle="modal"
+        data-bs-target="#newTransacModal"
+      >
         <i class="bi bi-plus"></i> New Transaction
       </button>
     </div>
   </div>
 
-  <div class="row overview mt-4">
+  <div class="row overview mt-3">
     <div class="col md-4">
       <div class="shadow-sm p-3 bg-body-tertiary rounded">
         <p>Current balance</p>
@@ -32,6 +37,85 @@ block title %} Transactions {% endblock %} {% block content %}
       </div>
     </div>
   </div>
+
+  <div class="row in-out mt-3">
+    <div class="col-md-12">
+      <div class="shadow-sm p-3 bg-body-tertiary rounded">
+        <p class="pb-1">Inflows and Outflows</p>
+        {% for transaction in transactions %}
+        <div class="row inoutflow-row mt-1">
+          <div class="col-md-10">
+            <p>{{ transaction.type }}</p>
+          </div>
+          <div class="col-md-2">
+            <p class="amount-redeemed" id="amount-redeemed">
+              {{ transaction.amount | replace(".", "") }}
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="newTransacModal"
+    tabindex="-1"
+    aria-labelledby="newTransacModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" id="modal-header">
+          <h1 class="modal-title fs-5" id="newTransacModalLabel">
+            Transaction
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <form action="{{ url_for('transactions') }}" method="POST">
+          <div class="modal-body">
+            <div class="row type_row">
+              <div class="col-md-12">
+                <label for="type-select">Transaction type:</label>
+                <select
+                  class="form-select"
+                  name="type-select"
+                  id="type-select"
+                  onchange="contentToRow(this.value)"
+                >
+                  <option value="" selected disabled>
+                    Click here to select
+                  </option>
+                  <option value="gain">Gain</option>
+                  <option value="expense">Expense</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="section_by_type mt-3 d-none" id="section_by_type"></div>
+          </div>
+          <div class="modal-footer" id="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn btn-save-trans">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
+{% endblock %} {% block content_scripts %}
+<script src="/static/js/transactions.js"></script>
 {% endblock %}
