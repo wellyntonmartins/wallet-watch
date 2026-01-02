@@ -22,11 +22,16 @@
     <div class="container-fluid">
       {% with messages = get_flashed_messages(with_categories=true) %} {% if
       messages %}
-      <ul class="flashes mt-2" style="list-style-type: none">
-        {% for category, message in messages %}
-        <li class="{{ category }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
+      <div
+        class="flash-section"
+        style="position: relative; width: 50%; text-align: center"
+      >
+        <ul class="flashes mt-2" style="list-style-type: none">
+          {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
       {% endif %} {% endwith %}
       <div class="login-container shadow-lg p-3">
         <div class="logo-section">

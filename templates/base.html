@@ -58,11 +58,16 @@
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         {% with messages = get_flashed_messages(with_categories=true) %} {% if
         messages %}
-        <ul class="flashes mt-2" style="list-style-type: none">
-          {% for category, message in messages %}
-          <li class="{{ category }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
+        <div
+          class="flash-section"
+          style="position: relative; width: 50%; text-align: center"
+        >
+          <ul class="flashes mt-2" style="list-style-type: none">
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+        </div>
         {% endif %} {% endwith %} {% block content %}{% endblock %}
       </main>
     </div>

@@ -39,8 +39,7 @@
 .in-out .col-md-12 .shadow-sm {
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
-  max-height: 200px;
+  max-height: 250px;
   gap: 5px;
 }
 
@@ -50,21 +49,32 @@
   margin: 0px;
 }
 
-.overview .shadow-sm h2.gains-h2 {
+.overview .shadow-sm input {
+  outline: none;
+  border: none;
+  background: none;
+  width: 100%;
+  font-size: 32px;
+  font-weight: 500;
+}
+
+.overview .shadow-sm input.gains-overview {
   color: var(--fourth-strong-color-light-mode);
 }
 
-.overview .shadow-sm h2.expenses-h2 {
+.overview .shadow-sm input.expenses-overview {
   color: var(--sixth-strong-color-light-mode);
 }
 
 .modal-header.gain,
 .modal-footer.gain {
+  color: var(--black-color);
   background: var(--fourth-strong-color-light-mode);
 }
 
 .modal-header.expense,
 .modal-footer.expense {
+  color: var(--black-color);
   background: var(--sixth-strong-color-light-mode);
 }
 
@@ -85,4 +95,88 @@ form .modal-footer .btn-save-trans {
 
 .modal-footer .btn-save-trans:hover {
   background: var(--fifth-strong-color-light-mode);
+}
+
+.in-out p.pb-1 {
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+
+.in-out .transac-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px 10px 10px;
+  overflow: auto;
+}
+
+.transac-section::-webkit-scrollbar {
+  width: 10px;
+}
+
+.transac-section::-webkit-scrollbar-track {
+  background: var(--fourth-color-light-mode);
+  border-radius: 5px;
+}
+
+.transac-section::-webkit-scrollbar-thumb {
+  background: var(--fifth-color-light-mode);
+  border-radius: 5px;
+}
+
+.transac-section::-webkit-scrollbar-thumb:hover {
+  background: var(--sixth-color-light-mode);
+}
+
+.transac-section .inoutflow-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+  border-bottom: 1px solid var(--gray-weak-color-light-mode);
+}
+
+.inoutflow-row .col-md-10 {
+  display: flex;
+  flex-direction: row;
+}
+
+.inoutflow-row .col-md-2 {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 10px;
+}
+
+.inoutflow-row .col-md-2 p {
+  display: flex;
+}
+
+.inoutflow-row p {
+  margin: 10px 0px;
+}
+
+.amount-redeemed {
+  outline: none;
+  border: none;
+  background: none;
+  field-sizing: content;
+}
+
+.gain {
+  color: var(--fourth-strong-color-light-mode);
+}
+
+.expense {
+  color: var(--sixth-strong-color-light-mode);
+}
+
+.transac-date {
+  color: var(--fifth-color-light-mode);
+}
+
+.p-nocontent {
+  color: var(--gray-weak-color-light-mode);
+  font-style: italic;
 }

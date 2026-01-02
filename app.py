@@ -56,8 +56,13 @@ def login():
 def register():
     if request.method == 'POST':
         email = request.form['email']
-        password = request.form['repeat-password']
+        password = request.form['password']
+        repeat_password = request.form['repeat-password']
 
+        if not password == repeat_password:
+            flash("Passwords doesn't match. Please, try again!", "warning")
+            return redirect(url_for('register'))
+        
         # Register the user on database
         cnx = get_db_connection()
         success, message, obj = setters.auth_register(cnx, email, password)  
@@ -118,10 +123,20 @@ def transactions():
     cnx = get_db_connection()
     success, message, transactions = getters.get_transactions(cnx, user_id)
 
+    total_expenses = 0
+    total_gains = 0
+    total_in_account = 0
+
     if success == True:
+        for transaction in transactions:
+            if transaction["type"] == "expense": # transaction[2] == transaction.type
+                total_expenses += transaction["amount"]
+            else:
+                total_gains += transaction["amount"]
+        total_in_account = total_gains - total_expenses
+
         print("\nFrom route '/transactions': Transactions successfully redeemed !\n")
-        flash(f"Transactions redeemed!", "success")
-        return render_template('transactions.html', transactions=transactions)
+        return render_template('transactions.html', transactions=transactions, total_gains=total_gains, total_expenses=total_expenses, total_in_account=total_in_account)
     else:
         print(f"\n(FAILED GET) From route '/transactions' - {message}\n")
         flash("Oops! Something got wrong. Please, call suport!", "danger")

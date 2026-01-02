@@ -36,7 +36,7 @@ def get_transactions(cnx, user_id):
     try:
         cursor = cnx.cursor(dictionary=True)
 
-        query = "SELECT * FROM transactions WHERE user_id = %s"
+        query = "SELECT * FROM transactions WHERE user_id = %s ORDER BY transaction_date DESC"
         cursor.execute(query, (user_id,))
         transactions = cursor.fetchall() 
 

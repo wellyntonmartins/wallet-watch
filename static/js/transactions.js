@@ -1,9 +1,24 @@
 document.addEventListener("DOMContentLoaded", function (event) {
-  $("#amount-redeemed").maskMoney({
-    decimal: ",",
-    thousands: ".",
-    allowNegative: false,
-  });
+  $(".amount-redeemed")
+    .maskMoney({
+      prefix: "R$ ",
+      decimal: ",",
+      thousands: ".",
+      allowNegative: false,
+    })
+    .maskMoney("mask");
+
+  $(".overview-input")
+    .maskMoney({
+      prefix: "R$ ",
+      decimal: ",",
+      thousands: ".",
+      allowNegative: false,
+    })
+    .maskMoney("mask");
+
+  $("input.amount-redeemed").prop("readonly", true);
+  $("input.overview-input").prop("readonly", true);
 });
 
 function contentToRow(selectValue) {

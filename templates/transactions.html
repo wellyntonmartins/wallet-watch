@@ -21,19 +21,31 @@ block title %} Transactions {% endblock %} {% block content %}
     <div class="col md-4">
       <div class="shadow-sm p-3 bg-body-tertiary rounded">
         <p>Current balance</p>
-        <h2>R$ 0,00</h2>
+        <input
+          type="text"
+          class="curr-b-overview overview-input"
+          value="R$ {{ total_in_account | replace('.', '') }}"
+        />
       </div>
     </div>
     <div class="col md-4">
       <div class="shadow-sm p-3 bg-body-tertiary rounded">
         <p>Gains</p>
-        <h2 class="gains-h2">R$ 0,00</h2>
+        <input
+          type="text"
+          class="gains-overview overview-input"
+          value="R$ {{ total_gains | replace('.', '') }}"
+        />
       </div>
     </div>
     <div class="col md-4">
       <div class="shadow-sm p-3 bg-body-tertiary rounded">
         <p>Expenses</p>
-        <h2 class="expenses-h2">R$ 0,00</h2>
+        <input
+          type="text"
+          class="expenses-overview overview-input"
+          value="R$ {{ total_expenses | replace('.', '') }}"
+        />
       </div>
     </div>
   </div>
@@ -41,19 +53,57 @@ block title %} Transactions {% endblock %} {% block content %}
   <div class="row in-out mt-3">
     <div class="col-md-12">
       <div class="shadow-sm p-3 bg-body-tertiary rounded">
-        <p class="pb-1">Inflows and Outflows</p>
-        {% for transaction in transactions %}
-        <div class="row inoutflow-row mt-1">
-          <div class="col-md-10">
-            <p>{{ transaction.type }}</p>
+        <p class="pb-1">
+          <i class="bi bi-cloud-fog2"></i>
+          Inflows and Outflows
+        </p>
+        <div class="transac-section">
+          <div class="row mb-4"></div>
+          {% if transactions %} {% for transaction in transactions %}
+          <div class="row inoutflow-row mt-1">
+            <div class="col-md-10">
+              <p class="{{ transaction.type }}">
+                {{ transaction.type.upper() }}
+              </p>
+              <p class="category">
+                , {{ transaction.category | capitalize }} (
+              </p>
+              <p class="description">{{ transaction.description }})</p>
+              {% set transac_date_string =
+              transaction.transaction_date.strftime('%Y-%m-%d') %} {% set
+              transac_date = transac_date_string.split('-') %}
+              <p class="transac-date">
+                , {{ transac_date[2] }}/{{ transac_date[1] }}/{{ transac_date[0]
+                }}
+              </p>
+            </div>
+            {% if transaction.type == "expense" %}
+            <div class="col-md-2 expense">
+              <i class="bi bi-caret-down-square"></i>
+              {% if transaction.essential == "yes" %}
+              <p class="essential">(Essential)</p>
+              {% else %}{% endif %}
+              <input
+                type="text"
+                class="amount-redeemed"
+                value='R$ {{ transaction.amount | replace(".", "") }}'
+              />
+            </div>
+            {% else %}
+            <div class="col-md-2 gain">
+              <i class="bi bi-caret-up-square"></i>
+              <input
+                type="text"
+                class="amount-redeemed"
+                value='R$ {{ transaction.amount | replace(".", "") }}'
+              />
+            </div>
+            {% endif %}
           </div>
-          <div class="col-md-2">
-            <p class="amount-redeemed" id="amount-redeemed">
-              {{ transaction.amount | replace(".", "") }}
-            </p>
-          </div>
+          {% endfor %} {% else %}
+          <p class="p-nocontent">No transactions found</p>
+          {% endif %}
         </div>
-        {% endfor %}
       </div>
     </div>
   </div>

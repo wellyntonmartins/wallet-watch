@@ -10,6 +10,7 @@ function stylizeFlashMessages() {
       padding: "10px",
       borderRadius: "8px",
       marginBottom: "10px",
+      zIndex: "2",
     },
     danger: {
       backgroundColor: "#f8d7da",
@@ -18,6 +19,7 @@ function stylizeFlashMessages() {
       padding: "10px",
       borderRadius: "8px",
       marginBottom: "10px",
+      zIndex: "2",
     },
     warning: {
       backgroundColor: "#fff3cd",
@@ -26,6 +28,7 @@ function stylizeFlashMessages() {
       padding: "10px",
       borderRadius: "8px",
       marginBottom: "10px",
+      zIndex: "2",
     },
   };
 
@@ -37,6 +40,9 @@ function stylizeFlashMessages() {
     }
   });
 
+  flashUl.style.position = "absolute";
+  flashUl.style.width = "100%";
+  flashUl.style.height = "60px";
   flashUl.style.padding = "0";
   flashUl.style.margin = "0";
 
