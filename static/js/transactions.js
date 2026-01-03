@@ -19,6 +19,171 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   $("input.amount-redeemed").prop("readonly", true);
   $("input.overview-input").prop("readonly", true);
+
+  const analyticsSection = document.getElementById("analytics-section");
+  const gainAnalyCol = document.getElementById("gain-analy");
+  const expAnalyCol = document.getElementById("exp-analy");
+
+  const ctxExpenses = document.getElementById("graphic-expenses");
+  const expenses_string = document.getElementById("expenses_list");
+
+  const ctxGains = document.getElementById("graphic-gains");
+  const gains_string = document.getElementById("gains_list");
+
+  console.log(`Gains String input: ${gains_string}`);
+
+  if (expenses_string == null) {
+    if (gains_string == null) {
+      analyticsSection.classList.add("d-none");
+    }
+
+    expAnalyCol.classList.add("d-none");
+  } else {
+    if (gains_string == null) {
+      expAnalyCol.classList.remove("col-md-6");
+      expAnalyCol.classList.add("col-md-12");
+    }
+
+    const expenses_string_val = expenses_string.value;
+    const expenses_replace = expenses_string_val.replace(/'/g, '"');
+    const expenses_list = JSON.parse(expenses_replace);
+    const sorted_expenses = Object.entries(expenses_list)
+      .filter(([_, value]) => value > 0)
+      .sort((a, b) => b[1] - a[1]);
+    const expenses_labels = sorted_expenses.map(([label]) => label);
+    const data_chart_expenses = sorted_expenses.map(([_, value]) => value);
+
+    const color_map_expenses = {
+      tax: "#eb3636ff",
+      food: "#4bc0c0",
+      transport: "#8056ffff",
+      leisure: "#ff66adff",
+      shopping: "#eb7324ff",
+      studies: "#51e014ff",
+      health: "#e2187aff",
+      transfer: "#badd1eff",
+      emergency: "#206e19ff",
+      other: "#c6cbd4ff",
+    };
+
+    const expenses_colors = sorted_expenses.map(
+      ([label]) => color_map_expenses[label]
+    );
+
+    const configExpenses = {
+      type: "doughnut",
+      data: {
+        labels: expenses_labels,
+        datasets: [
+          {
+            label: "Count of Expenses",
+            data: data_chart_expenses,
+            backgroundColor: expenses_colors,
+          },
+        ],
+      },
+      options: {
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            position: "right",
+            align: "center",
+            labels: {
+              generateLabels(chart) {
+                const total = data_chart_expenses.reduce((a, b) => a + b, 0);
+
+                const data = chart.data;
+                return data.labels.map((label, i) => {
+                  const value = data.datasets[0].data[i];
+                  const percentage = (value / total) * 100;
+
+                  return {
+                    text: `${label} (${percentage.toFixed(0)}%)`,
+                    fillStyle: data.datasets[0].backgroundColor[i],
+                    index: i,
+                  };
+                });
+              },
+            },
+          },
+        },
+      },
+    };
+
+    new Chart(ctxExpenses, configExpenses);
+  }
+
+  if (gains_string == null) {
+    gainAnalyCol.classList.add("d-none");
+  } else {
+    if (expAnalyCol.classList.contains("d-none")) {
+      gainAnalyCol.classList.remove("col-md-6");
+      gainAnalyCol.classList.add("col-md-12");
+    }
+
+    let gains_string_val = gains_string.value;
+    const gains_replace = gains_string_val.replace(/'/g, '"');
+    console.log(`Gains Replace: ${gains_replace}`);
+
+    const gains_list = JSON.parse(gains_replace);
+    const sorted_gains = Object.entries(gains_list)
+      .filter(([_, value]) => value > 0)
+      .sort((a, b) => b[1] - a[1]);
+    const gains_labels = sorted_gains.map(([label]) => label);
+    const data_chart_gains = sorted_gains.map(([_, value]) => value);
+
+    const color_map_gains = {
+      salary: "#36a2eb",
+      extra_income: "#4bc0c0",
+      capital_gain: "#ffcd56",
+      transfer: "#9966ff",
+      other: "#c9cbcf",
+    };
+
+    const gains_colors = sorted_gains.map(([label]) => color_map_gains[label]);
+
+    const configGains = {
+      type: "doughnut",
+      data: {
+        labels: gains_labels,
+        datasets: [
+          {
+            label: "Count of Gains",
+            data: data_chart_gains,
+            backgroundColor: gains_colors,
+          },
+        ],
+      },
+      options: {
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            position: "right",
+            align: "center",
+            labels: {
+              generateLabels(chart) {
+                const total = data_chart_gains.reduce((a, b) => a + b, 0);
+
+                const data = chart.data;
+                return data.labels.map((label, i) => {
+                  const value = data.datasets[0].data[i];
+                  const percentage = (value / total) * 100;
+
+                  return {
+                    text: `${label} (${percentage.toFixed(0)}%)`,
+                    fillStyle: data.datasets[0].backgroundColor[i],
+                    index: i,
+                  };
+                });
+              },
+            },
+          },
+        },
+      },
+    };
+
+    new Chart(ctxGains, configGains);
+  }
 });
 
 function contentToRow(selectValue) {

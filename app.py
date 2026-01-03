@@ -127,16 +127,67 @@ def transactions():
     total_gains = 0
     total_in_account = 0
 
+    expenses_list = {
+        'tax': 0,
+        'food': 0,
+        'transport': 0,
+        'leisure': 0,
+        'shopping': 0,
+        'studies': 0,
+        'health': 0,
+        'transfer': 0,
+        'emergency': 0,
+        'other': 0,
+    } 
+
+    gains_list = {
+        'salary': 0,
+        'extra_income': 0,
+        'capital_gain': 0,
+        'transfer': 0,
+        'other': 0,
+    } 
+
+    count_expenses = 0
+    count_gains = 0
+
     if success == True:
         for transaction in transactions:
-            if transaction["type"] == "expense": # transaction[2] == transaction.type
+            if transaction["type"] == "expense":
                 total_expenses += transaction["amount"]
+
+                if transaction["category"] in expenses_list:
+                    category = transaction["category"] 
+                    expenses_list[category] += 1
             else:
                 total_gains += transaction["amount"]
+
+                if transaction["category"] in gains_list:
+                    category = transaction["category"] 
+                    gains_list[category] += 1
+        
         total_in_account = total_gains - total_expenses
 
+        for category_count in expenses_list: 
+            if expenses_list[f'{category_count}'] > 0:
+                count_expenses += 1
+
+        for category_count in gains_list:
+            if gains_list[f'{category_count}'] > 0:
+                count_gains += 1
+
+        if count_expenses == 0:
+            sorted_expenses_list = None
+        else:
+            sorted_expenses_list = dict(sorted(expenses_list.items(), key=lambda item: item[1], reverse=True))
+        
+        if count_gains == 0:
+            sorted_gains_list = None    
+        else:
+            sorted_gains_list = dict(sorted(gains_list.items(), key=lambda item: item[1], reverse=True))
+
         print("\nFrom route '/transactions': Transactions successfully redeemed !\n")
-        return render_template('transactions.html', transactions=transactions, total_gains=total_gains, total_expenses=total_expenses, total_in_account=total_in_account)
+        return render_template('transactions.html', transactions=transactions, total_gains=total_gains, total_expenses=total_expenses, total_in_account=total_in_account, expenses_list=sorted_expenses_list, gains_list=sorted_gains_list)
     else:
         print(f"\n(FAILED GET) From route '/transactions' - {message}\n")
         flash("Oops! Something got wrong. Please, call suport!", "danger")

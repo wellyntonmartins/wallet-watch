@@ -1,6 +1,26 @@
 .container {
-  margin: 0px;
+  margin-bottom: 60px;
   padding: 0px 20px;
+  overflow-y: scroll;
+}
+
+.container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: var(--fourth-color-light-mode);
+  margin: 20px 0px;
+  border-radius: 5px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: var(--fifth-color-light-mode);
+  border-radius: 5px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: var(--sixth-color-light-mode);
 }
 
 .container .header-row {
@@ -106,8 +126,7 @@ form .modal-footer .btn-save-trans {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 10px 20px 10px 10px;
+  padding: 0px 10px;
   overflow: auto;
 }
 
@@ -179,4 +198,22 @@ form .modal-footer .btn-save-trans {
 .p-nocontent {
   color: var(--gray-weak-color-light-mode);
   font-style: italic;
+}
+
+.row .graphic-section {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  font-weight: 500;
+}
+
+.graphic-section .graphic-p {
+  margin-bottom: 0px;
+}
+
+.canvas-section {
+  display: flex;
+  justify-content: center;
+  height: 500px;
+  padding: 0px 10px;
 }
