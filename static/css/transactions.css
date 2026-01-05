@@ -1,7 +1,7 @@
 .container {
   margin-bottom: 60px;
   padding: 0px 20px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .container::-webkit-scrollbar {
@@ -23,24 +23,13 @@
   background: var(--sixth-color-light-mode);
 }
 
-.container .header-row {
-  display: flex;
-  justify-content: space-between;
-}
-
-.header-row .col-md-12 {
-  display: flex;
-  justify-content: space-between;
-}
-
-.header-row .col-md-12 h2 {
+.header-row .col-md-4 {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  gap: 10px;
+  justify-content: end;
 }
 
-.header-row .col-md-12 .btn-new-t {
+.header-row .col-md-4 .btn-new-t {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,12 +40,12 @@
   background: var(--fourth-color-light-mode);
 }
 
-.header-row .col-md-12 .btn-new-t:hover {
+.header-row .col-md-4 .btn-new-t:hover {
   background: var(--sixth-color-light-mode);
 }
 
 .overview .col-md-4 .shadow-sm,
-.in-out .col-md-12 .shadow-sm {
+.in-out .col-md-4 .shadow-sm {
   display: flex;
   flex-direction: column;
   max-height: 250px;
@@ -117,9 +106,10 @@ form .modal-footer .btn-save-trans {
   background: var(--fifth-strong-color-light-mode);
 }
 
-.in-out p.pb-1 {
+.in-out .inoutflow-title {
   font-weight: 500;
   margin-bottom: 0px;
+  padding-bottom: 0px;
 }
 
 .in-out .transac-section {
@@ -128,6 +118,7 @@ form .modal-footer .btn-save-trans {
   align-items: center;
   padding: 0px 10px;
   overflow: auto;
+  font-weight: 500;
 }
 
 .transac-section::-webkit-scrollbar {
@@ -152,23 +143,23 @@ form .modal-footer .btn-save-trans {
   display: flex;
   align-items: center;
   width: 100%;
-  font-size: 14px;
+  font-size: 16px;
   border-bottom: 1px solid var(--gray-weak-color-light-mode);
 }
 
-.inoutflow-row .col-md-10 {
+.inoutflow-row .col-md-9 {
   display: flex;
   flex-direction: row;
 }
 
-.inoutflow-row .col-md-2 {
+.inoutflow-row .col-md-3 {
   display: flex;
   justify-content: end;
   align-items: center;
   gap: 10px;
 }
 
-.inoutflow-row .col-md-2 p {
+.inoutflow-row .col-md-3 p {
   display: flex;
 }
 
@@ -181,6 +172,7 @@ form .modal-footer .btn-save-trans {
   border: none;
   background: none;
   field-sizing: content;
+  font-weight: 500;
 }
 
 .gain {
@@ -208,7 +200,11 @@ form .modal-footer .btn-save-trans {
 }
 
 .graphic-section .graphic-p {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
   margin-bottom: 0px;
+  font-weight: 500;
 }
 
 .canvas-section {

@@ -79,6 +79,7 @@ li a {
   color: inherit;
   text-decoration: none;
   color: black;
+  gap: 5px;
 }
 
 main {

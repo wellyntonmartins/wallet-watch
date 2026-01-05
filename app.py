@@ -96,7 +96,7 @@ def transactions():
 
         transaction_type = request.form['type-select']
         category = request.form['category-select']
-        essential = request.form['essential-select'] if transaction_type != 'gain' else 'N/A'
+        fixed_cost = request.form['fixed-cost-select'] if transaction_type != 'gain' else 'N/A'
         
         unparsed_amount = request.form['amount']
         parsing_amount = unparsed_amount.replace('.', '').replace(',', '.')
@@ -109,7 +109,7 @@ def transactions():
         description = request.form['description']
 
         cnx = get_db_connection()
-        success, message= setters.insert_transaction(cnx, user_id, transaction_type, category, essential, amount, transaction_date, description)
+        success, message= setters.insert_transaction(cnx, user_id, transaction_type, category, fixed_cost, amount, transaction_date, description)
 
         if success == True:
             print("\nFrom route '/transactions': Transaction successfully added !\n")
@@ -186,12 +186,28 @@ def transactions():
         else:
             sorted_gains_list = dict(sorted(gains_list.items(), key=lambda item: item[1], reverse=True))
 
+
         print("\nFrom route '/transactions': Transactions successfully redeemed !\n")
         return render_template('transactions.html', transactions=transactions, total_gains=total_gains, total_expenses=total_expenses, total_in_account=total_in_account, expenses_list=sorted_expenses_list, gains_list=sorted_gains_list)
     else:
         print(f"\n(FAILED GET) From route '/transactions' - {message}\n")
         flash("Oops! Something got wrong. Please, call suport!", "danger")
         return redirect(url_for('transactions'))
+
+
+@app.route('/reports', methods=['GET', 'POST'])
+def reports():
+    if 'user' in session:
+        return render_template("reports.html")
+    else:
+        return redirect(url_for('login'))
+    
+@app.route('/wishlist', methods=['GET', 'POST'])
+def wishlist():
+    if 'user' in session:
+        return render_template("wishlist.html")
+    else:
+        return redirect(url_for('login'))
 
 # Logout route that clear the session and redirect to login page
 @app.route('/logout', methods=['GET'])

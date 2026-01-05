@@ -5,8 +5,12 @@
 
 <div class="container">
   <div class="row header-row mt-3">
-    <div class="col-md-12">
-      <h2><i class="bi bi-cash-coin"></i> Transactions this month</h2>
+    <div class="col-md-8">
+      <h2 class="">
+        <i class="bi bi-folder2-open"></i> Transactions this month
+      </h2>
+    </div>
+    <div class="col-md-4">
       <button
         type="button"
         class="btn btn-new-t"
@@ -54,21 +58,19 @@
   <div class="row in-out mt-3">
     <div class="col-md-12">
       <div class="shadow-sm p-3 bg-body-tertiary rounded">
-        <p class="pb-1">
-          <i class="bi bi-cloud-fog2"></i>
+        <h5 class="inoutflow-title">
+          <i class="bi bi-wind"></i>
           Inflows and Outflows
-        </p>
+        </h5>
         <div class="transac-section">
           <div class="row mb-4"></div>
           {% if transactions %} {% for transaction in transactions %}
           <div class="row inoutflow-row mt-1">
-            <div class="col-md-10">
-              <p class="{{ transaction.type }}">
-                {{ transaction.type.upper() }}
+            <div class="col-md-9">
+              <p class="category {{ transaction.type }}">
+                {{ transaction.category | capitalize | replace("_", " ") }}
               </p>
-              <p class="category">
-                , {{ transaction.category | capitalize }} (
-              </p>
+              <p class="ps-1">(</p>
               <p class="description">
                 {% if transaction.description %}{{ transaction.description }}{%
                 else %}No description{% endif %})
@@ -82,10 +84,10 @@
               </p>
             </div>
             {% if transaction.type == "expense" %}
-            <div class="col-md-2 expense">
+            <div class="col-md-3 expense">
               <i class="bi bi-caret-down-square"></i>
-              {% if transaction.essential == "yes" %}
-              <p class="essential">(Essential)</p>
+              {% if transaction.fixed_cost == "yes" %}
+              <p class="fixed-cost">(Fixed Cost)</p>
               {% else %}{% endif %}
               <input
                 type="text"
@@ -94,7 +96,7 @@
               />
             </div>
             {% else %}
-            <div class="col-md-2 gain">
+            <div class="col-md-3 gain">
               <i class="bi bi-caret-up-square"></i>
               <input
                 type="text"
@@ -115,9 +117,10 @@
   <div class="row mt-3 analytics-section" id="analytics-section">
     <div class="col-md-6 exp-analy pb-0" id="exp-analy">
       <div class="graphic-section shadow-sm p-3 pb-0 bg-body-tertiary rounded">
-        <p class="graphic-p expense">
-          <i class="bi bi-percent"></i> Expenses Analytics per Percentage
-        </p>
+        <h5 class="graphic-p expense">
+          <i class="bi bi-hand-thumbs-down"></i> Expenses Analytics per
+          Percentage
+        </h5>
         {% if expenses_list %}
         <input
           type="hidden"
@@ -134,9 +137,10 @@
     </div>
     <div class="col-md-6 gain-analy pb-0" id="gain-analy">
       <div class="graphic-section shadow-sm p-3 pb-0 bg-body-tertiary rounded">
-        <p class="graphic-p gain">
-          <i class="bi bi-percent"></i> Gains Analytics per Percentage
-        </p>
+        <h5 class="graphic-p gain">
+          <i class="bi bi-hand-thumbs-up-fill"></i> Gains Analytics per
+          Percentage
+        </h5>
         {% if gains_list %}
         <input
           type="hidden"

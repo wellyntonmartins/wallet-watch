@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const ctxGains = document.getElementById("graphic-gains");
   const gains_string = document.getElementById("gains_list");
 
+  console.log(`Expenses String input: ${expenses_string}`);
   console.log(`Gains String input: ${gains_string}`);
 
   if (expenses_string == null) {
@@ -210,8 +211,8 @@ function contentToRow(selectValue) {
             Click here to select
             </option>
             <option value="salary">Salary</option>
-            <option value="extra-income">Extra Income</option>
-            <option value="capital-gain"> Capital Gain (Investments gains)</option>
+            <option value="extra_income">Extra Income</option>
+            <option value="capital_gain"> Capital Gain (Investments gains)</option>
             <option value="transfer">Transfer</option>
             <option value="other">Other gain</option>
         </select>
@@ -304,10 +305,10 @@ function contentToRow(selectValue) {
 
     <div class="row mt-3">
         <div class="col-md-12">
-            <label for="essential-select">Essential?:</label>
+            <label for="fixed-cost-select">Essential?:</label>
             <select
                 class="form-select"
-                name="essential-select"
+                name="fixed-cost-select"
                 id="essential-select"
                 required
             >
