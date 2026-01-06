@@ -46,3 +46,63 @@ def insert_transaction(cnx, user_id, transaction_type, category, fixed_cost, amo
             cursor.close()
         if cnx:
             cnx.close()
+
+def insert_wish(cnx, user_id, wish_name):
+    cursor = None
+
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        query = "INSERT INTO wishlist (user_id, wish_name, its_done) VALUES (%s, %s, %s)"
+        cursor.execute(query, (user_id, wish_name, 'no',))
+        cnx.commit()
+
+        return True, "Wish successfully added"
+    except Exception as e:
+        cnx.rollback()
+        return False, f"Error during wish add: {e}"
+    finally:
+        if cursor:
+            cursor.close()
+        if cnx:
+            cnx.close()
+
+def update_wish(cnx, wish_id, its_done):
+    cursor = None
+
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        query = "UPDATE wishlist SET its_done = %s WHERE id = %s"
+        cursor.execute(query, (its_done, wish_id,))
+        cnx.commit()
+
+        return True, "Wish successfully updated"
+    except Exception as e:
+        cnx.rollback()
+        return False, f"Error during wish update: {e}"
+    finally:
+        if cursor:
+            cursor.close()
+        if cnx:
+            cnx.close()
+
+def delete_wish(cnx, wish_id):
+    cursor = None
+
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        query = "DELETE FROM wishlist WHERE id = %s"
+        cursor.execute(query, (wish_id,))
+        cnx.commit()
+
+        return True, "Wish successfully deleted"
+    except Exception as e:
+        cnx.rollback()
+        return False, f"Error during wish update: {e}"
+    finally:
+        if cursor:
+            cursor.close()
+        if cnx:
+            cnx.close()

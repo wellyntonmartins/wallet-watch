@@ -1,1 +1,28 @@
 @import url("/static/css/root.css");
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 60px;
+  padding: 0px 20px;
+  overflow-y: auto;
+}
+
+.container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: var(--fourth-color-light-mode);
+  margin: 20px 0px;
+  border-radius: 5px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: var(--fifth-color-light-mode);
+  border-radius: 5px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: var(--sixth-color-light-mode);
+}

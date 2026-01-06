@@ -1,6 +1,6 @@
 # The file that runs all the application
 from datetime import timedelta, datetime
-from flask import Flask, flash, request, render_template, redirect, session, url_for
+from flask import Flask, flash, request, render_template, redirect, session, url_for, jsonify
 from connection import get_db_connection
 import getters, setters
 
@@ -194,7 +194,6 @@ def transactions():
         flash("Oops! Something got wrong. Please, call suport!", "danger")
         return redirect(url_for('transactions'))
 
-
 @app.route('/reports', methods=['GET', 'POST'])
 def reports():
     if 'user' in session:
@@ -202,10 +201,80 @@ def reports():
     else:
         return redirect(url_for('login'))
     
-@app.route('/wishlist', methods=['GET', 'POST'])
+@app.route('/wishlist', methods=['GET', 'POST', 'UPDATE', 'DELETE'])
 def wishlist():
     if 'user' in session:
-        return render_template("wishlist.html")
+        user_id = session['id']
+        
+        if request.method == 'POST':
+            wish = request.form["wish"]
+
+            cnx = get_db_connection()
+
+            success, message = setters.insert_wish(cnx, user_id, wish)
+
+            if success == True:
+                print("\n(POST) From route '/wishlist': Wish successfully added !\n")
+                flash(f"Wish added!", "success")
+                return redirect(url_for('wishlist'))
+            else:
+                print(f"\n(FAILED POST) From route '/wishlist' - {message}\n")
+                flash("Oops! Something got wrong. Please, call suport!", "danger")
+                return redirect(url_for('wishlist'))
+        elif request.method == 'UPDATE':
+            data = request.get_json()
+            wish_id = data.get("wish_id")
+            its_done_get = data.get("its_done")
+
+            print(f"\nIts done get: {its_done_get}")
+            its_done = ""
+
+            if its_done_get:
+                its_done = "yes"
+            else:
+                its_done = "no"
+
+            print(f"\nIts done: {its_done_get}")
+            cnx = get_db_connection()
+
+            success, message = setters.update_wish(cnx, wish_id, its_done)
+
+            if success == True:
+                print("\n(UPDATE) From route '/wishlist': Wish Successfully Updated !\n")
+                flash(f"Wish successfully updated!", "success")
+                return jsonify({'success': True})
+            else:
+                print(f"\n(FAILED UPDATE) From route '/wishlist' - {message}\n")
+                flash("Oops! Something got wrong. Please, call suport!", "danger")
+                return jsonify({'success': False})
+        elif request.method == 'DELETE':
+            data = request.get_json()
+            wish_id = data.get("wish_id")
+
+            cnx = get_db_connection()
+
+            success, message = setters.delete_wish(cnx, wish_id)
+
+            if success == True:
+                print("\n(DELETE) From route '/wishlist': Wish Successfully Deleted !\n")
+                flash(f"Wish successfully deleted!", "success")
+                return jsonify({'success': True})
+            else:
+                print(f"\n(FAILED DELETE) From route '/wishlist' - {message}\n")
+                flash("Oops! Something got wrong. Please, call suport!", "danger")
+                return jsonify({'success': False})
+        else:
+            cnx = get_db_connection()
+
+            success, message, wishlist = getters.get_wishlist(cnx, user_id)
+
+            if success == True:
+                print("\n(GET) From route '/wishlist': Wishes Successfully Loaded !\n")
+                return render_template("wishlist.html", wishlist=wishlist)
+            else:
+                print(f"\n(FAILED GET) From route '/wishlist' - {message}\n")
+                flash("Oops! Something got wrong. Please, call suport!", "danger")
+                return render_template("wishlist.html", wishlist=None)
     else:
         return redirect(url_for('login'))
 

@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block head %}
 <link rel="stylesheet" href="/static/css/wishlist.css" /> {% endblock %} {%
-block title %} Reports {% endblock %} {% block content %}
+block title %} Wish List {% endblock %} {% block content %}
 <div class="container">
   <div class="row mt-3">
     <div class="col-md-12">
@@ -9,5 +9,68 @@ block title %} Reports {% endblock %} {% block content %}
       </h2>
     </div>
   </div>
+
+  <div class="shadow-sm shadow-1 mt-3 p-3 bg-body-tertiary rounded">
+    <div class="row">
+      <div class="col-md-12 col-p">
+        <p>Type and add something to your "Wish list" above</p>
+      </div>
+    </div>
+
+    <form action="/wishlist" method="POST">
+      <div class="row mt-2 row-w">
+        <div class="col-md-9">
+          <input
+            type="text"
+            class="form-control"
+            name="wish"
+            id="wish"
+            placeholder="Ex: Headphones for work"
+          />
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-new-w">
+            <i class="bi bi-plus"> Add to Wish List</i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  {% if wishlist %}
+  <div class="shadow-sm shadow-2 mt-3 p-3 bg-body-tertiary rounded">
+    {% for wish in wishlist %}
+    <div
+      class="row m-2 mt-3 row-list {% if wish.its_done == 'yes' %} checked {% else %}{% endif %}"
+    >
+      <div class="col-md-2 column">
+        <label class="label-check">
+          <input type="checkbox" onclick="updateWish(this)" class="check-wish"
+          name="{{ wish.id }}" id="{{ wish.id }}" {% if wish.its_done == 'yes'
+          %} checked {% else %}{% endif %}/>
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div class="col-md-8 column"><p>{{ wish.wish_name }}</p></div>
+      <div class="col-md-2 column">
+        <button class="btn btn-danger" onclick="deleteWish(this)">
+          <i class="bi bi-trash-fill"></i>
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="shadow-sm shadow-2 mt-3 p-3 bg-body-tertiary rounded">
+    <div class="row m-1">
+      <div class="col-md-12">
+        <p class="p-nocontent">No one wishes on Wish List found</p>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
 </div>
-{% endblock %} {% block content_scripts %} {% endblock %}
+{% endblock %} {% block content_scripts %}
+<script src="/static/js/wishlist.js"></script>
+{% endblock %}

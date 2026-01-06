@@ -48,3 +48,22 @@ def get_transactions(cnx, user_id):
             cursor.close()
         if cnx:
             cnx.close()
+
+def get_wishlist(cnx, user_id):
+    cursor = None
+
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        query = "SELECT * FROM wishlist WHERE user_id = %s ORDER BY id DESC"
+        cursor.execute(query, (user_id,))
+        wishlist = cursor.fetchall() 
+
+        return True, "User wishlist successfully redeemed", wishlist
+    except Exception as e:
+        return False, f"Error during get user wishlist: {e}", "Exception"
+    finally:
+        if cursor:
+            cursor.close()
+        if cnx:
+            cnx.close()

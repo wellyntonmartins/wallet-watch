@@ -1,1 +1,136 @@
 @import url("/static/css/root.css");
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 60px;
+  padding: 0px 20px;
+  overflow-y: auto;
+}
+
+.container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: var(--fourth-color-light-mode);
+  margin: 20px 0px;
+  border-radius: 5px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: var(--fifth-color-light-mode);
+  border-radius: 5px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: var(--sixth-color-light-mode);
+}
+
+.container .shadow-sm {
+  align-self: center;
+  width: 70%;
+}
+
+.shadow-1 .col-p {
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.shadow-1 .row-w .btn-new-w {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  gap: 5px;
+  background: var(--fourth-color-light-mode);
+}
+
+.row-w .btn-new-w:hover {
+  background: var(--sixth-color-light-mode);
+}
+
+.shadow-2 .row-list {
+  border-radius: 8px;
+  font-weight: 500;
+  border: 1px solid var(--fifth-color-light-mode);
+  background: var(--second-color-light-mode);
+  padding: 5px;
+}
+
+.shadow-2 .row-list.checked p {
+  font-style: italic;
+  text-decoration: line-through;
+}
+
+.shadow-2 .row-list .column {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.column .label-check {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--fifth-strong-color-light-mode);
+}
+
+.label-check input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkmark {
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 0.15em;
+  margin-right: 0.5em;
+  display: grid;
+  place-content: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.label-check input[type="checkbox"]:checked + .checkmark {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.label-check input[type="checkbox"]:checked + .checkmark::after {
+  content: "✔";
+  font-size: 0.8em;
+  color: white;
+  transform: scale(1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.label-check input[type="checkbox"]:focus + .checkmark {
+  box-shadow: 0 0 0 0.15em #007bff99;
+  outline: 1px dotted #212121;
+}
+
+.row-list .column p {
+  margin: 0px;
+}
+
+.p-nocontent {
+  color: var(--gray-weak-color-light-mode);
+  text-align: center;
+  font-style: italic;
+  margin: 0px;
+}
