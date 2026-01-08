@@ -1,10 +1,11 @@
 # The file that runs all the application
 from datetime import timedelta, datetime
-from flask import Flask, flash, request, render_template, redirect, session, url_for, jsonify, send_from_directory
+from flask import Flask, flash, request, render_template, redirect, session, url_for, jsonify, send_from_directory, Response
 from connection import get_db_connection
 import os
 from werkzeug.utils import secure_filename
 import getters, setters 
+import reports_generator
 
 UPLOAD_FOLDER = 'static/images/payment_receipts'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg'}
@@ -254,7 +255,23 @@ def reports():
         return render_template("reports.html")
     else:
         return redirect(url_for('login'))
+
+@app.route('/generate_report', methods=['GET']) 
+def generate_report():
+    if 'user' not in session:
+        return redirect(url_for('login'))
     
+    user_id = session['id']
+    email = session['user']
+    
+    pdf_bytes = reports_generator.generate_monthly_report(user_id, email)
+    
+    if pdf_bytes:
+        return Response(pdf_bytes, mimetype='application/pdf', headers={'Content-Disposition': 'attachment;filename=monthly_report.pdf'})
+    else:
+        flash("Error generating report", "danger")
+        return redirect(url_for('reports'))
+
 @app.route('/wishlist', methods=['GET', 'POST', 'UPDATE', 'DELETE'])
 def wishlist():
     if 'user' in session:
@@ -346,6 +363,8 @@ def download_receipt(receipt_id):
             try:
                 download_name = f"RECEIPT_{receipt_id}{ext}"
                 print(f"\n(GET) From route '/download_receipt': Sending file {filename} as {download_name}")
+                flash("Payment receipt downloaded successfully!", "success")
+
                 return send_from_directory(
                     directory,
                     filename,
