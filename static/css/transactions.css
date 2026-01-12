@@ -1,6 +1,7 @@
 .container {
+  width: 100%;
+  margin: 0px;
   margin-bottom: 60px;
-  padding: 0px 20px;
   overflow-y: auto;
 }
 
@@ -117,7 +118,8 @@ form .modal-footer .btn-save-trans {
   flex-direction: column;
   align-items: center;
   padding: 0px 10px;
-  overflow: auto;
+  max-height: 300px;
+  overflow-y: auto;
   font-weight: 500;
 }
 
@@ -147,16 +149,17 @@ form .modal-footer .btn-save-trans {
   border-bottom: 1px solid var(--gray-weak-color-light-mode);
 }
 
-.inoutflow-row .col-md-9 {
-  display: flex;
-  flex-direction: row;
-}
-
 .inoutflow-row .col-md-3 {
   display: flex;
   justify-content: end;
   align-items: center;
   gap: 10px;
+}
+
+.inoutflow-row .col-md-9 {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 }
 
 .inoutflow-row .col-md-3 p {
@@ -230,6 +233,103 @@ form .modal-footer .btn-save-trans {
 .canvas-section {
   display: flex;
   justify-content: center;
-  height: 500px;
+  max-height: 500px;
   padding: 0px 10px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: 0px;
+    max-width: 100%;
+    padding: 0px 15px;
+  }
+
+  .header-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .header-row .col-md-4 {
+    justify-content: start;
+  }
+
+  .header-row .btn-new-t {
+    width: 100%;
+  }
+
+  .overview {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .overview .col-md-4 {
+    margin-bottom: 10px;
+  }
+
+  .overview .shadow-sm input {
+    font-size: 24px;
+  }
+
+  .transac-section .inoutflow-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 0px;
+    gap: 5px;
+  }
+
+  .inoutflow-row .col-md-9 {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .inoutflow-row p,
+  .inoutflow-row a {
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .transac-date {
+    font-size: 14px;
+  }
+
+  .inoutflow-row p {
+    margin: 0px;
+  }
+
+  .inoutflow-row a {
+    width: 100%;
+    margin: 5px 0px;
+  }
+
+  .inoutflow-row .col-md-3 {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 5px;
+  }
+
+  .amount-redeemed {
+    font-size: 18px;
+  }
+
+  .fixed-cost {
+    font-size: 14px;
+  }
+
+  .canvas-section {
+    height: 300px;
+  }
+
+  .analytics-section {
+    display: flex;
+    gap: 10px;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-footer button {
+    width: 100%;
+  }
 }

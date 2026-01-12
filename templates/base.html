@@ -12,6 +12,7 @@
     />
     <link rel="stylesheet" href="/static/css/base.css" />
     <script src="/static/js/flash.js"></script>
+    <script src="/static/js/base.js"></script>
     <title>{% block title %}{% endblock %} - Wallet Watch</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
@@ -36,7 +37,7 @@
     <!-- Top bar -->
     <div class="top-bar">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-10 column">
           <img
             class="top-bar-icon"
             src="/static/images/icon-logo-wallet-watch.png"
@@ -44,12 +45,29 @@
           />
           <label class="label-logo" for=""><b>Wallet Watch</b></label>
         </div>
+        <div class="col-2 column">
+          <a class="btn hideshow-lateral" id="hideshow-lateral">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              height="25"
+              fill="currentColor"
+              class="bi bi-map"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"
+              />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
 
     <!-- Lateral bar -->
     <div class="container-fluid p-0">
-      <nav class="lateral-bar col-md-3 col-lg-2 d-md-block sidebar collapse">
+      <nav class="lateral-bar">
         <ul>
           <li>
             <a href="/home"><i class="bi bi-house"></i> Home</a>
@@ -69,7 +87,7 @@
           </li>
         </ul>
       </nav>
-      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <main class="content-section">
         {% with messages = get_flashed_messages(with_categories=true) %} {% if
         messages %}
         <div

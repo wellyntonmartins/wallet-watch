@@ -43,7 +43,7 @@ block title %} Wish List {% endblock %} {% block content %}
     <div
       class="row m-2 mt-3 row-list {% if wish.its_done == 'yes' %} checked {% else %}{% endif %}"
     >
-      <div class="col-md-2 column">
+      <div class="col-2 column">
         <label class="label-check">
           <input type="checkbox" onclick="updateWish(this)" class="check-wish"
           name="{{ wish.id }}" id="{{ wish.id }}" {% if wish.its_done == 'yes'
@@ -51,8 +51,8 @@ block title %} Wish List {% endblock %} {% block content %}
           <span class="checkmark"></span>
         </label>
       </div>
-      <div class="col-md-8 column"><p>{{ wish.wish_name }}</p></div>
-      <div class="col-md-2 column">
+      <div class="col-8 column"><p>{{ wish.wish_name }}</p></div>
+      <div class="col-2 column">
         <button class="btn btn-danger" onclick="deleteWish(this)">
           <i class="bi bi-trash-fill"></i>
         </button>

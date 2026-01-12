@@ -67,23 +67,19 @@
           {% if transactions %} {% for transaction in transactions %}
           <div class="row inoutflow-row mt-1">
             <div class="col-md-9">
-              <p class="category {{ transaction.type }}">
-                {{ transaction.category | capitalize | replace("_", " ") }}
-              </p>
-              <p class="ps-1">(</p>
-              <p class="description">
-                {% if transaction.description %}{{ transaction.description }}{%
-                else %}No description{% endif %})
-              </p>
               {% set transac_date_string =
               transaction.transaction_date.strftime('%Y-%m-%d') %} {% set
               transac_date = transac_date_string.split('-') %}
+              <p class="category {{ transaction.type }}">
+                {{ transaction.category | capitalize | replace("_", " ") }} ({%
+                if transaction.description %}{{ transaction.description }}{%
+                else %}No description{% endif %})
+              </p>
               <p class="transac-date">
-                , {{ transac_date[2] }}/{{ transac_date[1] }}/{{ transac_date[0]
+                {{ transac_date[2] }}/{{ transac_date[1] }}/{{ transac_date[0]
                 }}
               </p>
               {% if transaction.has_receipt == "yes" %}
-              <p>,</p>
               <a
                 href="{{ url_for('download_receipt', receipt_id=transaction.id) }}"
                 >Download Receipt</a
