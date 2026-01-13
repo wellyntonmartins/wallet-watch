@@ -1,3 +1,4 @@
 env/
 /.env
+/payment_receipts/*
 __pycache__/

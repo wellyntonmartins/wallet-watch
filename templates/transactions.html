@@ -24,17 +24,27 @@
 
   <div class="row overview mt-3">
     <div class="col md-4">
-      <div class="shadow-sm p-3 bg-body-tertiary rounded">
+      <div class="shadow p-3 bg-body-tertiary rounded">
         <p>Current balance</p>
+        {% if not total_in_account >= 0 %}
+        <input
+          type="text"
+          class="curr-b-overview overview-input warning"
+          value="R$ {{ total_in_account | replace('.', '') }}"
+        />
+
+        {% else %}
+
         <input
           type="text"
           class="curr-b-overview overview-input"
           value="R$ {{ total_in_account | replace('.', '') }}"
         />
+        {% endif %}
       </div>
     </div>
     <div class="col md-4">
-      <div class="shadow-sm p-3 bg-body-tertiary rounded">
+      <div class="shadow p-3 bg-body-tertiary rounded">
         <p>Gains</p>
         <input
           type="text"
@@ -44,7 +54,7 @@
       </div>
     </div>
     <div class="col md-4">
-      <div class="shadow-sm p-3 bg-body-tertiary rounded">
+      <div class="shadow p-3 bg-body-tertiary rounded">
         <p>Expenses</p>
         <input
           type="text"
@@ -57,7 +67,7 @@
 
   <div class="row in-out mt-3">
     <div class="col-md-12">
-      <div class="shadow-sm p-3 bg-body-tertiary rounded">
+      <div class="shadow p-3 bg-body-tertiary rounded">
         <h5 class="inoutflow-title">
           <i class="bi bi-wind"></i>
           Inflows and Outflows
@@ -119,7 +129,7 @@
 
   <div class="row mt-3 analytics-section" id="analytics-section">
     <div class="col-md-6 exp-analy pb-0" id="exp-analy">
-      <div class="graphic-section shadow-sm p-3 pb-0 bg-body-tertiary rounded">
+      <div class="graphic-section shadow p-3 pb-0 bg-body-tertiary rounded">
         <h5 class="graphic-p expense">
           <i class="bi bi-hand-thumbs-down"></i> Expenses Analytics per
           Percentage
@@ -139,7 +149,7 @@
       </div>
     </div>
     <div class="col-md-6 gain-analy pb-0" id="gain-analy">
-      <div class="graphic-section shadow-sm p-3 pb-0 bg-body-tertiary rounded">
+      <div class="graphic-section shadow p-3 pb-0 bg-body-tertiary rounded">
         <h5 class="graphic-p gain">
           <i class="bi bi-hand-thumbs-up-fill"></i> Gains Analytics per
           Percentage

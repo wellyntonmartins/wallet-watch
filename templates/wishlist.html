@@ -10,7 +10,7 @@ block title %} Wish List {% endblock %} {% block content %}
     </div>
   </div>
 
-  <div class="shadow-sm shadow-1 mt-3 p-3 bg-body-tertiary rounded">
+  <div class="shadow shadow-1 mt-3 p-3 bg-body-tertiary rounded">
     <div class="row">
       <div class="col-md-12 col-p">
         <p>Type and add something to your "Wish list" above</p>
@@ -38,7 +38,7 @@ block title %} Wish List {% endblock %} {% block content %}
   </div>
 
   {% if wishlist %}
-  <div class="shadow-sm shadow-2 mt-3 p-3 bg-body-tertiary rounded">
+  <div class="shadow shadow-2 mt-3 p-3 bg-body-tertiary rounded">
     {% for wish in wishlist %}
     <div
       class="row m-2 mt-3 row-list {% if wish.its_done == 'yes' %} checked {% else %}{% endif %}"
@@ -61,7 +61,7 @@ block title %} Wish List {% endblock %} {% block content %}
     {% endfor %}
   </div>
   {% else %}
-  <div class="shadow-sm shadow-2 mt-3 p-3 bg-body-tertiary rounded">
+  <div class="shadow shadow-2 mt-3 p-3 bg-body-tertiary rounded">
     <div class="row m-1">
       <div class="col-md-12">
         <p class="p-nocontent">No one wishes on Wish List found</p>

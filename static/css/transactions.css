@@ -45,21 +45,21 @@
   background: var(--sixth-color-light-mode);
 }
 
-.overview .col-md-4 .shadow-sm,
-.in-out .col-md-4 .shadow-sm {
+.overview .col-md-4 .shadow,
+.in-out .col-md-4 .shadow {
   display: flex;
   flex-direction: column;
   max-height: 250px;
   gap: 5px;
 }
 
-.overview .shadow-sm p {
+.overview .shadow p {
   font-size: 15px;
   color: var(--gray-weak-color-light-mode);
   margin: 0px;
 }
 
-.overview .shadow-sm input {
+.overview .shadow input {
   outline: none;
   border: none;
   background: none;
@@ -68,11 +68,11 @@
   font-weight: 500;
 }
 
-.overview .shadow-sm input.gains-overview {
+.overview .shadow input.gains-overview {
   color: var(--fourth-strong-color-light-mode);
 }
 
-.overview .shadow-sm input.expenses-overview {
+.overview .shadow input.expenses-overview {
   color: var(--sixth-strong-color-light-mode);
 }
 
@@ -206,6 +206,10 @@ form .modal-footer .btn-save-trans {
   color: var(--sixth-strong-color-light-mode);
 }
 
+.warning {
+  color: var(--warning-strong-yellow-color);
+}
+
 .transac-date {
   color: var(--fifth-color-light-mode);
 }
@@ -266,7 +270,7 @@ form .modal-footer .btn-save-trans {
     margin-bottom: 10px;
   }
 
-  .overview .shadow-sm input {
+  .overview .shadow input {
     font-size: 24px;
   }
 

@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
       prefix: "R$ ",
       decimal: ",",
       thousands: ".",
-      allowNegative: false,
+      allowNegative: true,
     })
     .maskMoney("mask");
 

@@ -28,7 +28,7 @@
   background: var(--sixth-color-light-mode);
 }
 
-.container .shadow-sm {
+.container .shadow {
   align-self: center;
   width: 70%;
 }
@@ -143,7 +143,7 @@
     padding: 0px 15px;
   }
 
-  .shadow-sm {
+  .shadow {
     min-width: 100%;
   }
 

@@ -185,7 +185,6 @@ def transactions():
     # To store the values for overview
     total_expenses = 0
     total_gains = 0
-    total_in_account = 0
 
     expenses_list = {
         'tax': 0,
@@ -228,8 +227,12 @@ def transactions():
                     category = transaction["category"] 
                     gains_list[category] += 1
         
+        # if total_gains < total_expenses: 
+        #     total_in_account = f"- {total_gains - total_expenses}"
+        # else:
+        
         total_in_account = total_gains - total_expenses
-
+            
         # Seting the count values...
         for category_count in expenses_list: 
             if expenses_list[f'{category_count}'] > 0:
@@ -406,6 +409,6 @@ def logout():
 
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 5000))
+    port = int(os.getenv("PORT", 7000))
     app.run(host="0.0.0.0", port=port)
 

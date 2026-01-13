@@ -41,3 +41,9 @@ div.card .card-body {
   font-style: italic;
   color: var(--fifth-color-light-mode);
 }
+
+@media (max-width: 768px) {
+  .container .row.mt-3:nth-child(2) {
+    gap: 10px;
+  }
+}
