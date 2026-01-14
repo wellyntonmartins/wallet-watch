@@ -152,6 +152,10 @@ main {
     transform: translateX(0);
   }
 
+  ul li {
+    height: 45px;
+  }
+
   .content-section {
     width: 100%;
   }

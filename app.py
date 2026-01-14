@@ -6,6 +6,9 @@ import os
 from werkzeug.utils import secure_filename
 import getters, setters # Functions to set and get infos on database (MySQL)
 import reports_generator
+from flask_mail import Mail, Message
+import random
+import string
 
 UPLOAD_FOLDER = 'static/images/payment_receipts'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg'}
@@ -14,6 +17,17 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=5)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+app.config.update(
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USERNAME='walletwatchingcompany@gmail.com',
+    MAIL_PASSWORD='humgwstwirwhnfjh',
+    MAIL_DEFAULT_SENDER='Wallet Watching walletwatchingcompany@gmail.com'
+)
+
+mail = Mail(app)
 
 
 # Def to verify if the receipt file type is on allowed extensios
@@ -57,13 +71,13 @@ def login():
                 return redirect(url_for('login'))
             elif obj == "UNF":
                 print(f"\n(FAILED POST) From route '/login' - {message}\n")
-                flash("This user doesn't exists on Wallet Watch. Please register!", "danger")
+                flash("This user doesn't exists on Wallet Watching. Please register!", "danger")
                 return redirect(url_for('login'))
             # Else some error occurred during authentication
             print(f"\n(FAILED POST) From route '/login' - {message}\n")
             flash("Oops! Something got wrong. Please, call suport!", "danger")
             return redirect(url_for('login'))
-    return render_template('login.html')
+    return render_template('login.html', isRecover=False)
 
 # Route for page "Register"
 @app.route('/register', methods=['GET', 'POST'])
@@ -90,7 +104,7 @@ def register():
             # Else if user already exists, redirect to login page
             if obj is None:
                 print(f"\n(FAILED POST) From route '/auth_register' - {message}\n")
-                flash("This user already exists on Wallet Watch. Please, login!", "warning")
+                flash("This user already exists on Wallet Watching. Please, login!", "warning")
                 return redirect(url_for('register'))
             # Else some error occurred during registration
             else:
@@ -398,6 +412,120 @@ def download_receipt(receipt_id):
     flash("Receipt not found. Please, call support!", "danger")
     return redirect(url_for('transactions'))
 
+@app.route('/send_mail', methods=['POST'])
+def send_mail():
+    if 'user' in session:
+        return redirect(url_for('home'))
+    
+    request_email = request.form["recover-email"]
+
+    cnx = get_db_connection()
+    success, message, user = getters.verify_user(cnx, request_email)
+
+    if success == True:
+        try:             
+            name = user['email'].split("@")[0]
+            code = generate_code()
+
+            status_email, message_email = send_code_to_mail(user['email'], name, code)
+            
+            if status_email == True:
+                cnx = get_db_connection()
+                success_insert_cover, message_insert_cover = setters.insert_recover(cnx, user['id'], code)
+
+                if success_insert_cover == True: 
+                    print("\n(POST) From route '/send_mail': E-mail sent!\n")
+                    return render_template('login.html', isRecover=True, user_id=user['id'])
+                else:
+                    print(f"\n(POST FAILED) From route '/send_mail': {message_insert_cover}\n")
+                    flash("Oops! Something got wrong. Please, call suport!", "danger")
+                    return render_template('login.html', isRecover=False)
+            else:
+                print(message_email)
+                flash("Oops! Something got wrong. Please, call suport!", "danger")
+                return render_template('login.html', isRecover=False)
+        except Exception as e:
+            print(f"\n(POST FAILED) From route '/send_mail': {e}\n")
+            flash("Oops! Something got wrong. Please, call suport!", "danger")
+            return render_template('login.html', isRecover=False)    
+    elif user == "UNF":
+        print(f"\n(FAILED POST) From route '/send_mail' - {message}\n")
+        flash("User not found! Did you enter the right e-mail?", "danger")
+        return redirect(url_for('wishlist'))
+    else:
+        print(f"\n(FAILED POST) From route '/wishlist' - {message}\n")
+        flash("Oops! Something got wrong. Please, call suport!", "danger")
+        return redirect(url_for('wishlist'))
+
+def generate_code():
+    return ''.join(random.choices(string.digits, k=6))
+
+def send_code_to_mail(email, name, code):
+    try:
+        msg = Message(
+            subject="Password change - Wallet Watching",
+            recipients=[email]
+        )
+
+        msg.html = render_template(
+            "/email_model.html",
+            name=name,
+            code=code,
+            year=datetime.now().year
+        )
+
+        mail.send(msg)
+        return True, "Email sent"
+    except Exception as e:
+        return False, f"(FAILED EMAIL SENT) {e}"
+
+@app.route('/verify_code', methods=['POST'])
+def verify_code():
+    if 'user' in session:
+        return redirect(url_for('home'))
+    
+    user_id = request.form["user_id"]
+    request_code = request.form["code"]
+
+    cnx = get_db_connection()
+    success, message, code = getters.get_code(cnx, user_id, request_code)
+
+    if success == True:
+       cnx = get_db_connection()
+       setters.delete_recover(cnx, user_id)
+       return render_template("update_password.html", user_id=user_id)
+    elif code == "EXP":
+        print(f"\n(FAILED POST) From route '/verify_code': The code has expired")
+        flash("Code expired! Please, make the request again!", "danger")
+        return redirect(url_for('login'))
+    else:
+        print(f"\n(FAILED POST) From route '/verify_code': {message}")
+        flash("Oops! Something got wrong. Please, call support!", "danger")
+        return redirect(url_for('login'))
+
+@app.route('/password_change', methods=['POST'])
+def password_change():
+    user_id = request.form["user_id"]
+    password = request.form['password']
+    repeat_password = request.form['repeat-password']
+
+    if not password == repeat_password:
+        flash("Passwords doesn't match. Please, try again!", "warning")
+        return render_template('update_password.html', user_id=user_id)
+    
+    cnx = get_db_connection()
+    success, message = setters.update_user_password(cnx, user_id, repeat_password)  
+
+    if success == True:
+        cnx = get_db_connection()
+        success_delete_recover, message_delete_recover = setters.delete_recover(cnx, user_id)
+        print("\n(POST) From route '/password_change': User updated successfully!\n")
+        flash("Password change was a success! Welcome again :)!", "success") 
+        return redirect(url_for('login'))
+    else:
+        print(f"\n(FAILED POST) From route '/password_change' - {message}\n")
+        flash("Oops! Something got wrong. Please, call support!", "danger")
+        return redirect(url_for('login'))
 
 
 # Logout route that clear the session and redirect to login page
@@ -406,9 +534,7 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-
-
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 7000))
+    port = int(os.getenv("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
 

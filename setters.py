@@ -106,3 +106,63 @@ def delete_wish(cnx, wish_id):
             cursor.close()
         if cnx:
             cnx.close()
+
+def insert_recover(cnx, user_id, code):
+    cursor = None
+
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        query = "INSERT INTO recover (user_id, code) VALUES (%s, %s)"
+        cursor.execute(query, (user_id, code,))
+        cnx.commit()
+
+        return True, "Recover code successfully added"
+    except Exception as e:
+        cnx.rollback()
+        return False, f"Error during recover code add: {e}"
+    finally:
+        if cursor:
+            cursor.close()
+        if cnx:
+            cnx.close()
+
+def delete_recover(cnx, user_id):
+    cursor = None
+
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        query = "DELETE FROM recover WHERE user_id = %s;"
+        cursor.execute(query, (user_id,))
+        cnx.commit()
+
+        return True, "Recover successfully deleted"
+    except Exception as e:
+        cnx.rollback()
+        return False, f"Error during delete recover: {e}"
+    finally:
+        if cursor:
+            cursor.close()
+        if cnx:
+            cnx.close()
+
+def update_user_password(cnx, user_id, password):
+    cursor = None
+
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        query = "UPDATE user set password = md5(%s) WHERE id = %s"
+        cursor.execute(query, (password, user_id,))
+        cnx.commit()
+
+        return True, "User password successfully updated"
+    except Exception as e:
+        cnx.rollback()
+        return False, f"Error during user password update: {e}"
+    finally:
+        if cursor:
+            cursor.close()
+        if cnx:
+            cnx.close()

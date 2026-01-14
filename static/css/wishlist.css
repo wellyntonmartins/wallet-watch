@@ -50,6 +50,7 @@
   outline: none;
   border: none;
   border-radius: 8px;
+  height: 45px;
   font-size: 14px;
   gap: 5px;
   background: var(--fourth-color-light-mode);

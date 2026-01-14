@@ -258,6 +258,7 @@ form .modal-footer .btn-save-trans {
   }
 
   .header-row .btn-new-t {
+    height: 45px;
     width: 100%;
   }
 

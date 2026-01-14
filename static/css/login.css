@@ -54,6 +54,22 @@ form button:hover {
   background-color: var(--sixth-color-light-mode);
 }
 
+button.btn-recover {
+  text-underline-position: auto;
+  outline: none;
+  border: none;
+  color: var(--white-color);
+  width: auto;
+  height: auto;
+  background: none;
+  text-decoration: underline;
+  text-underline-position: auto;
+}
+
+button.btn-recover:hover {
+  background-color: none;
+}
+
 form a {
   color: var(--white-color);
 }
@@ -76,6 +92,32 @@ form .form-group {
   outline: none;
   border: none;
   box-shadow: 10px 10px var(--third-color-light-mode);
+}
+
+.modal-header,
+.modal-footer {
+  background: var(--fifth-color-light-mode);
+  color: var(--white-color);
+}
+
+.modal .modal-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-footer button {
+  max-width: 40%;
+}
+
+.modal .btn-send {
+  background: var(--fourth-color-light-mode);
+}
+
+.modal .btn-send:hover {
+  color: var(--black-color);
+  background: var(--sixth-color-light-mode);
 }
 
 @media (max-width: 768px) {

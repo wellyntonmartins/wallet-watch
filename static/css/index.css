@@ -16,6 +16,7 @@ h1 .h1-pt2 {
 }
 
 div.card {
+  cursor: pointer;
   border-radius: 12px;
   border: 2px solid var(--gray-color-light-mode);
 }

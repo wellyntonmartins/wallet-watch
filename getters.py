@@ -86,3 +86,47 @@ def get_table_status(cnx, table):
             cursor.close()
         if cnx:
             cnx.close()
+
+def verify_user(cnx, email):
+    cursor = None
+
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        check_email_query = "SELECT * FROM user WHERE email = %s"
+        cursor.execute(check_email_query, (email,))
+        existing_user = cursor.fetchone()
+
+        if not existing_user:
+            return False, "User is not registered!", "UNF"
+        
+        return True, "User found", existing_user
+    except Exception as e:
+        return False, f"Error during authentication: {e}", "Exception"
+    finally:
+        if cursor:
+            cursor.close()
+        if cnx:
+            cnx.close()
+
+def get_code(cnx, user_id, code):
+    cursor = None
+
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        query = "SELECT * FROM recover WHERE user_id = %s AND code = %s AND expires_at > NOW();"
+        cursor.execute(query, (user_id, code,))
+        row = cursor.fetchone()
+
+        if not row:
+            return False, "Code expired!", "EXP"
+        
+        return True, "Code found", row["code"] 
+    except Exception as e:
+        return False, f"Error during authentication: {e}", "Exception"
+    finally:
+        if cursor:
+            cursor.close()
+        if cnx:
+            cnx.close()

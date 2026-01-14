@@ -7,7 +7,7 @@ title %} Home {% endblock %} {% block content %}
     <div class="col-md-12">
       <h1>
         Welcome to
-        <div class="h1-pt2">Wallet Watch</div>
+        <div class="h1-pt2">Wallet Watching</div>
       </h1>
       <p>Your personal finance management tool.</p>
     </div>
@@ -16,7 +16,7 @@ title %} Home {% endblock %} {% block content %}
   <div class="row mt-3">
     <div class="col-md-4">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" onclick="window.location='/transactions'">
           <h5 class="card-title">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@ title %} Home {% endblock %} {% block content %}
     </div>
     <div class="col-md-4">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" onclick="window.location='/reports'">
           <h5 class="card-title">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +73,7 @@ title %} Home {% endblock %} {% block content %}
     </div>
     <div class="col-md-4">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" onclick="window.location='/wishlist'">
           <h5 class="card-title">
             <svg
               xmlns="http://www.w3.org/2000/svg"
