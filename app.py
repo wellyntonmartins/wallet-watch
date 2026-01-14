@@ -3,12 +3,13 @@ from datetime import timedelta, datetime
 from flask import Flask, flash, request, render_template, redirect, session, url_for, jsonify, send_from_directory, Response
 from connection import get_db_connection
 import os
+import requests
 from werkzeug.utils import secure_filename
 import getters, setters # Functions to set and get infos on database (MySQL)
 import reports_generator
-from flask_mail import Mail, Message
 import random
 import string
+
 
 UPLOAD_FOLDER = 'static/images/payment_receipts'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg'}
@@ -17,17 +18,6 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=5)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-app.config.update(
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT=587,
-    MAIL_USE_TLS=True,
-    MAIL_USERNAME='walletwatchingcompany@gmail.com',
-    MAIL_PASSWORD='humgwstwirwhnfjh',
-    MAIL_DEFAULT_SENDER='Wallet Watching walletwatchingcompany@gmail.com'
-)
-
-mail = Mail(app)
 
 
 # Def to verify if the receipt file type is on allowed extensios
@@ -460,24 +450,39 @@ def send_mail():
 def generate_code():
     return ''.join(random.choices(string.digits, k=6))
 
-def send_code_to_mail(email, name, code):
+def send_code_to_mail(to_email, name, code):
     try:
-        msg = Message(
-            subject="Password change - Wallet Watching",
-            recipients=[email]
-        )
-
-        msg.html = render_template(
-            "/email_model.html",
+        html_content = render_template(
+            "email_model.html",
             name=name,
             code=code,
             year=datetime.now().year
         )
 
-        mail.send(msg)
-        return True, "Email sent"
+        print("RESEND_API_KEY =", os.getenv("RESEND_API_KEY"))
+
+        response = requests.post(
+            "https://api.resend.com/emails",
+            headers={
+                "Authorization": f"Bearer {os.getenv('RESEND_API_KEY').strip()}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "from": "Wallet Watch <onboarding@resend.dev>",
+                "to": [to_email],
+                "subject": "Password recovery code",
+                "html": html_content
+            },
+            timeout=10
+        )
+
+        if response.status_code in (200, 201):
+            return True, "E-mail enviado com sucesso"
+
+        return False, f"Erro ao enviar e-mail: {response.text}"
+
     except Exception as e:
-        return False, f"(FAILED EMAIL SENT) {e}"
+        return False, str(e)
 
 @app.route('/verify_code', methods=['POST'])
 def verify_code():
@@ -535,6 +540,6 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 5000))
+    port = int(os.getenv("PORT", 7000))
     app.run(host="0.0.0.0", port=port)
 
