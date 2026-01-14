@@ -69,7 +69,10 @@ def login():
             print(f"\n(FAILED POST) From route '/login' - {message}\n")
             flash("Oops! Something got wrong. Please, call suport!", "danger")
             return redirect(url_for('login'))
-    return render_template('login.html', isRecover=False)
+    
+    is_recover_param = request.args.get('isRecover') == 'true'
+    user_id_param = request.args.get('user_id')
+    return render_template('login.html', isRecover=is_recover_param, user_id=user_id_param)
 
 # Route for page "Register"
 @app.route('/register', methods=['GET', 'POST'])
@@ -432,24 +435,24 @@ def send_mail():
 
             if success_insert_cover == True: 
                 print("\n(POST) From route '/send_mail': E-mail sent!\n")
-                return render_template('login.html', isRecover=True, user_id=user['id'])
+                return redirect(url_for('login', isRecover='true', user_id=user['id']))
             else:
                 print(f"\n(POST FAILED) From route '/send_mail': {message_insert_cover}\n")
                 flash("Oops! Something got wrong. Please, call suport!", "danger")
-                return render_template('login.html', isRecover=False)
+                return redirect(url_for('login'))
                 
         except Exception as e:
             print(f"\n(POST FAILED) From route '/send_mail': {e}\n")
             flash("Oops! Something got wrong. Please, call suport!", "danger")
-            return render_template('login.html', isRecover=False)    
+            return redirect(url_for('login'))    
     elif user == "UNF":
         print(f"\n(FAILED POST) From route '/send_mail' - {message}\n")
         flash("User not found! Did you enter the right e-mail?", "danger")
-        return redirect(url_for('wishlist'))
+        return redirect(url_for('login'))
     else:
         print(f"\n(FAILED POST) From route '/wishlist' - {message}\n")
         flash("Oops! Something got wrong. Please, call suport!", "danger")
-        return redirect(url_for('wishlist'))
+        return redirect(url_for('login'))
 
 def generate_code():
     return ''.join(random.choices(string.digits, k=6))
