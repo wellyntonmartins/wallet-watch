@@ -465,9 +465,9 @@ def send_code_to_mail(to_email, name, code):
         )
 
         message = Mail(
-            from_email=os.getenv("SENDGRID_FROM_EMAIL"),
+            from_email=os.getenv("SENDGRID_FROM_EMAIL", "Wallet Watching 📬 - noreply"),
             to_emails=to_email,
-            subject="Password recovery code",
+            subject="Your password recovery code - Wallet Watching",
             html_content=html_content
         )
 
