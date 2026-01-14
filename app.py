@@ -9,7 +9,7 @@ import reports_generator
 import random
 import string
 from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from sendgrid.helpers.mail import Mail, From
 from threading import Thread
 
 
@@ -468,7 +468,7 @@ def send_code_to_mail(to_email, name, code):
         )
 
         message = Mail(
-            from_email=os.getenv("SENDGRID_FROM_EMAIL", "Wallet Watching 📬 - noreply"),
+            from_email=From(os.getenv("SENDGRID_FROM_EMAIL"), "Wallet Watching 📬 - noreply"),
             to_emails=to_email,
             subject="Your password recovery code - Wallet Watching",
             html_content=html_content
