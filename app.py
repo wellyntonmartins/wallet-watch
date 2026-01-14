@@ -488,9 +488,9 @@ def send_async_email(app, to_email, name, code):
         success, message = send_code_to_mail(to_email, name, code)
 
         if success:
-            app.logger.info(f"[EMAIL] Sent to {to_email}")
+            print(f"[EMAIL] Sent to {to_email}")
         else:
-            app.logger.error(f"[EMAIL] Failed to {to_email} | {message}")
+            print(f"[EMAIL] Failed to {to_email} | {message}")
         
 
 
