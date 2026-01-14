@@ -422,27 +422,22 @@ def send_mail():
 
             # Generate the recovery code and send e-mail by SMTP
             code = generate_code()
-            status, message_thread = Thread(
+            Thread(
                 target=send_async_email,
                 args=(app, user['email'], name, code)
             ).start()
 
-            if status == True:
-                cnx = get_db_connection()
-                success_insert_cover, message_insert_cover = setters.insert_recover(cnx, user['id'], code)
+            cnx = get_db_connection()
+            success_insert_cover, message_insert_cover = setters.insert_recover(cnx, user['id'], code)
 
-                if success_insert_cover == True: 
-                    print("\n(POST) From route '/send_mail': E-mail sent!\n")
-                    return render_template('login.html', isRecover=True, user_id=user['id'])
-                else:
-                    print(f"\n(POST FAILED) From route '/send_mail': {message_insert_cover}\n")
-                    flash("Oops! Something got wrong. Please, call suport!", "danger")
-                    return render_template('login.html', isRecover=False)
+            if success_insert_cover == True: 
+                print("\n(POST) From route '/send_mail': E-mail sent!\n")
+                return render_template('login.html', isRecover=True, user_id=user['id'])
             else:
-                print(f"\n(POST FAILED) From route '/send_mail': {message_thread}\n")
+                print(f"\n(POST FAILED) From route '/send_mail': {message_insert_cover}\n")
                 flash("Oops! Something got wrong. Please, call suport!", "danger")
                 return render_template('login.html', isRecover=False)
-            
+                
         except Exception as e:
             print(f"\n(POST FAILED) From route '/send_mail': {e}\n")
             flash("Oops! Something got wrong. Please, call suport!", "danger")
@@ -491,9 +486,11 @@ def send_code_to_mail(to_email, name, code):
 def send_async_email(app, to_email, name, code):
     with app.app_context():
         success, message = send_code_to_mail(to_email, name, code)
-        if success == True:
-            return True, message
-        return False, message
+
+        if success:
+            app.logger.info(f"[EMAIL] Sent to {to_email}")
+        else:
+            app.logger.error(f"[EMAIL] Failed to {to_email} | {message}")
         
 
 
@@ -554,6 +551,6 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 7000))
+    port = int(os.getenv("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
 
