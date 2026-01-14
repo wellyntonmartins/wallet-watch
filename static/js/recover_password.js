@@ -11,10 +11,10 @@ function clickAndFill(btn) {
   const btnModal = document.getElementById("btn-modal");
   const form = document.getElementById("form-recover");
 
-  modalTitle.innerHTML = "Enter the recovery code";
+  modalTitle.innerHTML = "Enter the recovery code (📬 CHECK IF IT'S ON SPAM)";
   modalBody.innerHTML = `
         <p>
-            We sent you a recovery code on your email. To have sure it's you, please enter the sent code below:
+            ✉️ We sent you a recovery code on your email. To have sure it's you, please enter the sent code below:
         </p>
         <input
             type="text"
