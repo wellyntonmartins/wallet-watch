@@ -402,6 +402,7 @@ def download_receipt(receipt_id):
     flash("Receipt not found. Please, call support!", "danger")
     return redirect(url_for('transactions'))
 
+# Route to sent the recover email (to change to a new user password)
 @app.route('/send_mail', methods=['POST'])
 def send_mail():
     if 'user' in session:
@@ -409,17 +410,20 @@ def send_mail():
     
     request_email = request.form["recover-email"]
 
+    # Verify if user exists on Wallet Watching
     cnx = get_db_connection()
     success, message, user = getters.verify_user(cnx, request_email)
 
     if success == True:
         try:             
             name = user['email'].split("@")[0]
-            code = generate_code()
 
+            # Generate the recovery code and send e-mail by Resend
+            code = generate_code()
             status_email, message_email = send_code_to_mail(user['email'], name, code)
             
             if status_email == True:
+                # Insert the code to database
                 cnx = get_db_connection()
                 success_insert_cover, message_insert_cover = setters.insert_recover(cnx, user['id'], code)
 
@@ -468,22 +472,23 @@ def send_code_to_mail(to_email, name, code):
                 "Content-Type": "application/json"
             },
             json={
-                "from": "Wallet Watch <onboarding@resend.dev>",
+                "from": "Wallet Watching <onboarding@resend.dev>",
                 "to": [to_email],
-                "subject": "Password recovery code",
+                "subject": "Password recovery code of Wallet Watching",
                 "html": html_content
             },
             timeout=10
         )
 
         if response.status_code in (200, 201):
-            return True, "E-mail enviado com sucesso"
+            return True, "Email was sent successfully"
 
-        return False, f"Erro ao enviar e-mail: {response.text}"
+        return False, f"Errr during email sent: {response.text}"
 
     except Exception as e:
         return False, str(e)
 
+# Route to verify user recovery code
 @app.route('/verify_code', methods=['POST'])
 def verify_code():
     if 'user' in session:
@@ -508,6 +513,7 @@ def verify_code():
         flash("Oops! Something got wrong. Please, call support!", "danger")
         return redirect(url_for('login'))
 
+# Route to change user password
 @app.route('/password_change', methods=['POST'])
 def password_change():
     user_id = request.form["user_id"]
@@ -531,7 +537,6 @@ def password_change():
         print(f"\n(FAILED POST) From route '/password_change' - {message}\n")
         flash("Oops! Something got wrong. Please, call support!", "danger")
         return redirect(url_for('login'))
-
 
 # Logout route that clear the session and redirect to login page
 @app.route('/logout', methods=['GET'])
