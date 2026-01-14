@@ -8,8 +8,8 @@ import getters, setters # Functions to set and get infos on database (MySQL)
 import reports_generator
 import random
 import string
-import smtplib
-from email.message import EmailMessage
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 from threading import Thread
 
 
@@ -454,6 +454,7 @@ def send_mail():
 def generate_code():
     return ''.join(random.choices(string.digits, k=6))
 
+
 def send_code_to_mail(to_email, name, code):
     try:
         html_content = render_template(
@@ -463,22 +464,20 @@ def send_code_to_mail(to_email, name, code):
             year=datetime.now().year
         )
 
-        msg = EmailMessage()
-        msg["Subject"] = "Password recovery code"
-        msg["From"] = os.getenv("MAIL_DEFAULT_SENDER")
-        msg["To"] = to_email
-        msg.set_content("Use the code below to recover your password.")
-        msg.add_alternative(html_content, subtype="html")
+        message = Mail(
+            from_email=os.getenv("SENDGRID_FROM_EMAIL"),
+            to_emails=to_email,
+            subject="Password recovery code",
+            html_content=html_content
+        )
 
-        with smtplib.SMTP(os.getenv("MAIL_SERVER"), int(os.getenv("MAIL_PORT"))) as server:
-            server.starttls()
-            server.login(
-                os.getenv("MAIL_USERNAME"),
-                os.getenv("MAIL_PASSWORD")
-            )
-            server.send_message(msg)
+        sg = SendGridAPIClient(os.getenv("SENDGRID_API_KEY"))
+        response = sg.send(message)
 
-        return True, "E-mail sent successfully"
+        if response.status_code in [200, 202]:
+            return True, "E-mail sent successfully"
+
+        return False, f"Error SendGrid: {response.status_code}"
 
     except Exception as e:
         return False, str(e)
