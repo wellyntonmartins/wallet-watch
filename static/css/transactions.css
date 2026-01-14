@@ -10,8 +10,9 @@
 }
 
 .container::-webkit-scrollbar-track {
-  background: var(--fourth-color-light-mode);
+  background: transparent;
   margin: 20px 0px;
+  margin-bottom: 80px;
   border-radius: 5px;
 }
 
@@ -347,6 +348,13 @@ button.btn-outline-danger {
   }
 
   .modal-footer button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 320px) {
+  .inoutflow-row .col-md-3 {
+    flex-direction: column;
     width: 100%;
   }
 }
