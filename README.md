@@ -1,3 +1,9 @@
+![HTML](https://img.shields.io/badge/HTML-Frontend-red)
+![Python](https://img.shields.io/badge/Python-Backend-blue)
+![Flask](https://img.shields.io/badge/Flask-Python%20Framework-orange)
+![MySQL](https://img.shields.io/badge/MySQL-Database-white)
+![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento(Mas%20funcionando)-purple)
+
 # 💼 👁️ Wallet Watching
 
 Um **projeto web desenvolvido em Python com Flask**, utilizando **banco de dados MySQL**, **HTML/CSS/JavaScript** para interface, e foco na gestão financeira pessoal. O sistema permite o **gerenciamento de transações financeiras**, wish lists (lista de desejos), autenticação de usuários e geração de relatórios mensais em PDF, com análises e insights automáticos. Tudo integrado com atualização dinâmica de dados e visualizações com gráficos para análises de ganhos e gastos.
